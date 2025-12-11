@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSU-SND Student Affairs Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #8B0000 0%, #D4AF37 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-left: 8px solid #8B0000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo i {
+            font-size: 3rem;
+            color: #8B0000;
+            margin-right: 20px;
+        }
+        
+        .logo-text {
+            text-align: left;
+        }
+        
+        h1 {
+            color: #8B0000;
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #555;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .campus-name {
+            color: #8B0000;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #FFD700;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .chatbot-container {
+            flex: 2;
+            min-width: 350px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid #8B0000;
+        }
+        
+        .chat-header {
+            background: linear-gradient(to right, #8B0000, #A52A2A);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-header i {
+            font-size: 1.8rem;
+            margin-right: 15px;
+        }
+        
+        .chat-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 500px;
+            background-color: #f9f9f9;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bot-message {
+            align-items: flex-start;
+        }
+        
+        .user-message {
+            align-items: flex-end;
+        }
+        
+        .message-bubble {
+            max-width: 85%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.5;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .bot-message .message-bubble {
+            background-color: #e9ecef;
+            color: #333;
+            border-top-left-radius: 5px;
+            border-left: 4px solid #8B0000;
+        }
+        
+        .user-message .message-bubble {
+            background-color: #8B0000;
+            color: white;
+            border-top-right-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 0.75rem;
+            color: #777;
+            margin-top: 5px;
+        }
+        
+        .user-message .message-time {
+            text-align: right;
+        }
+        
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            background-color: white;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        
+        .chat-input input:focus {
+            border-color: #8B0000;
+            box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.2);
+        }
+        
+        .chat-input button {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-left: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .chat-input button:hover {
+            background-color: #A52A2A;
+            transform: scale(1.05);
+        }
+        
+        .quick-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .quick-option {
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .quick-option:hover {
+            background-color: #8B0000;
+            color: white;
+            border-color: #8B0000;
+        }
+        
+        .info-panel {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-top: 5px solid #D4AF37;
+            max-height: 700px;
+            overflow-y: auto;
+        }
+        
+        .info-panel h3 {
+            color: #8B0000;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .info-category {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .info-category:last-child {
+            border-bottom: none;
+        }
+        
+        .info-category h4 {
+            color: #8B0000;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-category h4 i {
+            margin-right: 10px;
+            color: #D4AF37;
+        }
+        
+        .info-category p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .info-category ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .info-category li {
+            margin-bottom: 8px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            background-color: #FFF8E1;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #FFD700;
+        }
+        
+        .contact-info {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #8B0000;
+        }
+        
+        .contact-info h4 {
+            color: #8B0000;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-info h4 i {
+            margin-right: 10px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .contact-item i {
+            color: #8B0000;
+            margin-right: 10px;
+            width: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            color: #555;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-top: 3px solid #D4AF37;
+        }
+        
+        .footer-highlight {
+            color: #8B0000;
+            font-weight: bold;
+        }
+        
+        .emergency-contact {
+            background-color: #FFEBEE;
+            border: 1px solid #FFCDD2;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .chatbot-container, .info-panel {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo i {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .logo-text {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <div class="logo-text">
+                    <h1>MSU-SND Student Affairs Assistant</h1>
+                    <p class="subtitle">Comprehensive Student Services Information Portal</p>
+                    <div class="campus-name">Mindanao State University - Sultan Naga Dimaporo</div>
+                </div>
+            </div>
+            <p>Your complete guide to all student affairs, services, policies, and regulations at MSU-SND</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="chatbot-container">
+                <div class="chat-header">
+                    <i class="fas fa-robot"></i>
+                    <h2>MSU-SND Virtual Assistant</h2>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Messages will appear here -->
+                    <div class="message bot-message">
+                        <div class="message-bubble">
+                            <strong>Welcome to MSU-Sultan Naga Dimaporo Student Affairs Assistant!</strong><br><br>
+                            I can help you with ALL student affairs information including:<br>
+                            • Admissions & Registration<br>
+                            • Scholarships & Financial Aid<br>
+                            • Academic Policies & Grading<br>
+                            • Student Organizations & Activities<br>
+                            • Campus Facilities & Services<br>
+                            • Discipline & Code of Conduct<br>
+                            • Health & Wellness Services<br>
+                            • And much more!<br><br>
+                            How can I assist you today?
+                        </div>
+                        <div class="message-time" id="current-time"></div>
+                    </div>
+                </div>
+                
+                <div class="quick-options" id="quick-options">
+                    <button class="quick-option" onclick="askQuestion('admission requirements for freshmen')">Freshmen Admission</button>
+                    <button class="quick-option" onclick="askQuestion('scholarship programs available')">Scholarships</button>
+                    <button class="quick-option" onclick="askQuestion('registration procedures')">Registration</button>
+                    <button class="quick-option" onclick="askQuestion('grading system and honors')">Grading System</button>
+                    <button class="quick-option" onclick="askQuestion('student discipline policies')">Discipline Policies</button>
+                    <button class="quick-option" onclick="askQuestion('campus facilities and services')">Campus Facilities</button>
+                    <button class="quick-option" onclick="askQuestion('drug-free campus policy')">Drug-Free Policy</button>
+                    <button class="quick-option" onclick="askQuestion('student organizations list')">Student Orgs</button>
+                    <button class="quick-option" onclick="askQuestion('tuition and fees')">Tuition & Fees</button>
+                    <button class="quick-option" onclick="askQuestion('contact student affairs office')">Contact OSA</button>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="user-input" placeholder="Ask about any student affairs topic..." onkeypress="handleKeyPress(event)">
+                    <button id="send-button" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <h3><i class="fas fa-info-circle"></i> Complete MSU-SND Student Affairs</h3>
+                
+                <div class="info-category">
+                    <h4><i class="fas fa-door-open"></i> Admissions Office</h4>
+                    <p><strong>Director:</strong> Office of Student Affairs (OSA)</p>
+                    <div class="highlight">
+                        <strong>MSU-SND Admission Policy:</strong> No discrimination based on age, sex, nationality, religion, or political affiliation. Special accommodation for marginalized students.
+                    </div>
+                    <p><strong>Requirements for Freshmen:</strong></p>
+                    <ul>
+                        <li>Passing SASE/CET score (not below system median)</li>
+                        <li>Senior High School Report Card (Form 138-A, Original)</li>
+                        <li>Certificate of Good Moral Character from SHS Principal</li>
+                        <li>PSA-authenticated Birth Certificate</li>
+                        <li>Medical Certificate from University Clinic</li>
+                        <li>4 copies of 2x2 ID Pictures with name tag</li>
+                        <li>Marriage Certificate (if applicable)</li>
+                    </ul>
+                </div>
+                
+                <div class="info-category">
+                    <h4><i class="fas fa-graduation-cap"></i> Scholarships & Financial Aid</h4>
+                    <p><strong>Available Scholarships:</strong></p>
+                    <ul>
+                        <li><strong>SASE Scholarship:</strong> For top SASE exam scorers</li>
+                        <li><strong>Academic Excellence:</strong> President's List (1.00 GPA), Chancellor's List (1.25+ GPA), Dean's List (1.75+ GPA)</li>
+                        <li><strong>Athletic Scholarships:</strong> For varsity players</li>
+                        <li><strong>Special Skills Grants:</strong> For cultural performers (Sakasakaw Ensemble, Orly's Band)</li>
+                        <li><strong>TES Grants:</strong> Government scholarships</li>
+                    </ul>
+                    <div class="highlight">
+                        <strong>Note:</strong> Students may only avail ONE government scholarship at a time. Scholarships are non-transferable between campuses.
+                    </div>
+                </div>
+                
+                <div class="info-category">
+                    <h4><i class="fas fa-calendar-alt"></i> Registration & Academics</h4>
+                    <p><strong>Office of the Registrar</strong> handles all academic records and registration.</p>
+                    <p><strong>Academic Load:</strong></p>
+                    <ul>
+                        <li>Normal load: 18 units (non-lab) or 20 units (with lab)</li>
+                        <li>With 1.5+ GPA: 21 units (non-lab) or 23 units (with lab)</li>
+                        <li>Graduating students: Maximum 28 units</li>
+                        <li>Summer term: 6 units normal, 9 units maximum</li>
+                    </ul>
+                    <p><strong>Student Classification:</strong></p>
+                    <ul>
+                        <li>Freshman: ≤25% of total units</li>
+                        <li>Sophomore: 26-50% of total units</li>
+                        <li>Junior: 51-75% of total units</li>
+                        <li>Senior: ≥76% of total units</li>
+                    </ul>
+                </div>
+                
+                <div class="info-category">
+                    <h4><i class="fas fa-balance-scale"></i> Student Discipline</h4>
+                    <p><strong>Grounds for Disciplinary Action:</strong></p>
+                    <ul>
+                        <li>Cheating or academic dishonesty</li>
+                        <li>Carrying weapons on campus</li>
+                        <li>Alcohol/drug use or possession</li>
+                        <li>Threats, assault, or violence</li>
+                        <li>Immoral or dishonest conduct</li>
+                        <li>Violation of university policies</li>
+                    </ul>
+                    <p><strong>Disciplinary Committees:</strong></p>
+                    <ul>
+                        <li>College Investigating Committee</li>
+                        <li>Inter-college Disciplinary Committee</li>
+                    </ul>
+                    <p><strong>Sanctions:</strong> Warning, Reprimand, Suspension, Expulsion</p>
+                </div>
+                
+                <div class="contact-info">
+                    <h4><i class="fas fa-address-card"></i> MSU-SND Student Affairs Contacts</h4>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span><strong>Address:</strong> MSU-Sultan Naga Dimaporo, Ramain, Sultan Naga Dimaporo, Lanao del Norte</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-user-tie"></i>
+                        <span><strong>OSA Director:</strong> Mr. Albert R. Cabolbol</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span><strong>Office Phone:</strong> (063) XXX-XXXX</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span><strong>Email:</strong> osa@msu-snd.edu.ph</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span><strong>Office Hours:</strong> Monday-Friday, 8:00 AM - 5:00 PM</span>
+                    </div>
+                    
+                    <div class="emergency-contact">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Emergency Contacts</h4>
+                        <div class="contact-item">
+                            <i class="fas fa-ambulance"></i>
+                            <span><strong>Campus Clinic:</strong> (063) XXX-XXXX</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span><strong>Campus Security:</strong> (063) XXX-XXXX</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p><span class="footer-highlight">Mindanao State University - Sultan Naga Dimaporo (MSU-SND)</span> | Student Handbook 2024 Edition</p>
+            <p>This assistant provides comprehensive information from the official MSU-SND Student Handbook. For official documents and verification, please consult the handbook or visit the OSA office.</p>
+            <p><em>Advancing Academic Excellence and Good Governance</em></p>
+        </footer>
+    </div>
+
+    <script>
+        // Set current time for initial message
+        document.getElementById('current-time').textContent = getCurrentTime();
+        
+        // Function to get current time in HH:MM format
+        function getCurrentTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' + 
+                   now.getMinutes().toString().padStart(2, '0');
+        }
+        
+        // Function to handle Enter key press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // Function to send a message
+        function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            
+            if (message === '') return;
+            
+            // Display user message
+            displayMessage(message, 'user');
+            
+            // Clear input
+            userInput.value = '';
+            
+            // Process message and generate bot response
+            setTimeout(() => {
+                const botResponse = generateResponse(message);
+                displayMessage(botResponse, 'bot');
+                
+                // Scroll to bottom of chat
+                const chatMessages = document.getElementById('chat-messages');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 500);
+        }
+        
+        // Function to display a message in the chat
+        function displayMessage(message, sender) {
+            const chatMessages = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            
+            messageDiv.classList.add('message');
+            if (sender === 'user') {
+                messageDiv.classList.add('user-message');
+            } else {
+                messageDiv.classList.add('bot-message');
+            }
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.classList.add('message-bubble');
+            bubbleDiv.innerHTML = message;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.classList.add('message-time');
+            timeDiv.textContent = getCurrentTime();
+            
+            messageDiv.appendChild(bubbleDiv);
+            messageDiv.appendChild(timeDiv);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // COMPREHENSIVE RESPONSE GENERATOR FOR ALL STUDENT AFFAIRS
+        function generateResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            // ========== ADMISSIONS ==========
+            if (message.includes('admission') || message.includes('admit') || message.includes('apply') || message.includes('entrance')) {
+                if (message.includes('freshmen') || message.includes('freshman') || message.includes('new student') || message.includes('first year')) {
+                    return `<strong>Freshmen Admission Requirements at MSU-SND:</strong><br><br>
+                    1. <strong>Passing SASE/CET Score:</strong> Must meet or exceed cut-off score (not below system median)<br>
+                    2. <strong>Senior High School Report Card:</strong> Form 138-A (Original)<br>
+                    3. <strong>Certificate of Good Moral Character:</strong> From SHS Principal/Guidance Counselor<br>
+                    4. <strong>Birth Certificate:</strong> PSA-authenticated<br>
+                    5. <strong>Medical Certificate:</strong> From MSU-SND Infirmary/Clinic<br>
+                    6. <strong>ID Pictures:</strong> 4 copies of 2x2 with name tag<br>
+                    7. <strong>Marriage Certificate:</strong> If applicable (PSA-authenticated)<br>
+                    8. <strong>Envelope:</strong> One long brown envelope in transparent plastic<br><br>
+                    <em>SASE scores are valid for one academic year only. Conditional passers may need to complete Pre-University Programs.</em>`;
+                }
+                else if (message.includes('transfer') || message.includes('transferee')) {
+                    if (message.includes('other msu') || message.includes('within msu')) {
+                        return `<strong>Transfer from Other MSU Campuses to MSU-SND:</strong><br><br>
+                        <strong>Requirements:</strong><br>
+                        1. Comply with department policy of desired program<br>
+                        2. Can complete at least 50% of required units at MSU-SND<br>
+                        3. Present Transcript of Records (signed by Registrar)<br>
+                        4. Certificate of Good Moral Character from previous campus<br><br>
+                        <strong>Documents for Registration:</strong><br>
+                        • Honorable Dismissal/Transfer Certificate<br>
+                        • PSA Birth Certificate<br>
+                        • Medical Certificate from MSU-SND Clinic<br>
+                        • 4 copies of 2x2 ID Pictures<br>
+                        • Marriage Certificate (if applicable)`;
+                    }
+                    else {
+                        return `<strong>Transfer from Other Institutions to MSU-SND:</strong><br><br>
+                        <strong>Requirements:</strong><br>
+                        1. Must pass SASE or CET exam<br>
+                        2. Can complete at least 50% of required units at MSU-SND<br>
+                        3. Satisfy department policy<br>
+                        4. Slot availability in desired program<br>
+                        5. Transcript of Records from previous school<br>
+                        6. Certificate of Good Moral Character<br><br>
+                        <strong>Note:</strong> Transferees are on probationary status and must validate subjects taken elsewhere within 4 semesters.`;
+                    }
+                }
+                else if (message.includes('foreign') || message.includes('international')) {
+                    return `<strong>Foreign Student Admission at MSU-SND:</strong><br><br>
+                    <strong>Requirements:</strong><br>
+                    1. Meet CHED, Department of Foreign Affairs, and Bureau of Immigration requirements<br>
+                    2. Comply with MOA provisions if under exchange program<br>
+                    3. Pass English Proficiency Test if first language is not English<br>
+                    4. Pass SASE or CET if required<br>
+                    5. Submit all required documents for international students`;
+                }
+                else if (message.includes('sase') || message.includes('cet') || message.includes('exam')) {
+                    return `<strong>SASE/CET Information for MSU-SND:</strong><br><br>
+                    <strong>SASE (System Admission and Scholarship Exam):</strong><br>
+                    • Held once a year every February<br>
+                    • Administered by Office of VP for Academic Affairs<br>
+                    • Scores valid for one academic year<br>
+                    • Cut-off scores determined by each campus (not below system median)<br><br>
+                    <strong>CET (College Entrance Test):</strong><br>
+                    • Administered upon campus request each semester<br>
+                    • Qualifies for enrollment only at campus where taken<br>
+                    • CET passers cannot avail of university scholarship program<br><br>
+                    <strong>Important:</strong> Students with fake SASE/CET scores will be dropped from roster.`;
+                }
+                else {
+                    return `<strong>MSU-SND Admission Policy:</strong><br><br>
+                    • No discrimination based on age, sex, nationality, religious belief, or political affiliation<br>
+                    • Reasonable accommodation for marginalized students<br>
+                    • Office of Admission may introduce additional policies for campus-specific needs<br>
+                    • Conditional passers may need Pre-University Programs (CBP or CPC)<br><br>
+                    <strong>Key Points:</strong><br>
+                    1. Admission ≠ Guarantee of enrollment in specific program<br>
+                    2. Different programs may have different cut-off scores<br>
+                    3. Students with disciplinary records may be refused admission<br>
+                    4. All policies approved by Campus Academic Planning Committee and Chancellor`;
+                }
+            }
+            
+            // ========== SCHOLARSHIPS ==========
+            else if (message.includes('scholarship') || message.includes('grant') || message.includes('financial aid') || message.includes('stipend')) {
+                if (message.includes('academic') || message.includes('dean') || message.includes('president') || message.includes('chancellor') || message.includes('list')) {
+                    return `<strong>Academic Excellence Scholarships at MSU-SND:</strong><br><br>
+                    <strong>1. President's List:</strong> GPA of 1.00 during previous semester<br>
+                    <strong>2. Chancellor's List:</strong> GPA of 1.25 or better<br>
+                    <strong>3. Dean's List:</strong> GPA of 1.75 or better<br><br>
+                    <strong>Privileges:</strong> Determined by campus, may include cash incentives, fee discounts, or other benefits<br><br>
+                    <strong>Requirements:</strong><br>
+                    • Pass all subjects<br>
+                    • Maintain prescribed GPA each semester<br>
+                    • Complete INC grades before next term registration closes<br>
+                    • Finish course within prescribed period`;
+                }
+                else if (message.includes('athletic') || message.includes('sports') || message.includes('varsity')) {
+                    return `<strong>Athletic Scholarships at MSU-SND:</strong><br><br>
+                    Available for students with talents in:<br>
+                    • Arnis • Athletics • Badminton • Baseball • Basketball<br>
+                    • Sepak Takraw • Soccer • Softball • Swimming • Table Tennis • Volleyball<br><br>
+                    <strong>Benefits:</strong> Monthly stipend and other benefits<br>
+                    <strong>Office:</strong> Campus Sports Development Office<br>
+                    <strong>MSUSAA:</strong> MSU System Athletic Association Unity Games held annually`;
+                }
+                else if (message.includes('special skill') || message.includes('cultural') || message.includes('arts') || message.includes('performance')) {
+                    return `<strong>Special Skills Grants at MSU-SND:</strong><br><br>
+                    Available for members of:<br>
+                    <strong>• Sakasakaw Cultural Ensemble</strong><br>
+                    <strong>• The Orly's Band</strong><br><br>
+                    <strong>Other MSU Campuses have:</strong><br>
+                    • Darangen Cultural Troupe (Marawi)<br>
+                    • Kalimulan Cultural Dance Troupe (IIT)<br>
+                    • Tambuli (TCTO)<br>
+                    • MSU Chorale (General Santos)<br>
+                    • And many other cultural groups`;
+                }
+                else if (message.includes('forfeit') || message.includes('lose') || message.includes('terminate') || message.includes('cancel')) {
+                    return `<strong>Grounds for Scholarship Forfeiture at MSU-SND:</strong><br><br>
+                    1. Violation of scholarship policies<br>
+                    2. Membership in illegal, violent, or subversive organizations<br>
+                    3. Drug use, threats, immorality, dishonesty, disrespect<br>
+                    4. Failure to pay just obligations<br>
+                    5. Falsification of official records<br>
+                    6. Expulsion or dismissal from university<br>
+                    7. Non-availability or exhaustion of scholarship funds<br><br>
+                    <strong>Note:</strong> Scholars must file Leave of Absence if taking off semester to avoid forfeiture.`;
+                }
+                else if (message.includes('rule') || message.includes('policy') || message.includes('guideline')) {
+                    return `<strong>Scholarship Rules at MSU-SND:</strong><br><br>
+                    1. Only ONE government scholarship at a time<br>
+                    2. TES grantees disqualified from campus scholarships (except talent grants)<br>
+                    3. No scholarship for second degree students<br>
+                    4. Shifting generally disallowed (except with permission)<br>
+                    5. Must finish PE and NSTP within first 2 years<br>
+                    6. Maximum extension: 1 year beyond prescribed period<br>
+                    7. Must sign scholarship contract with campus administration<br>
+                    8. Must inform of other scholarships received<br>
+                    9. File LOA for justified absences (max 1 year)<br>
+                    10. Must complete course within prescribed period`;
+                }
+                else {
+                    return `<strong>Scholarship Programs at MSU-SND:</strong><br><br>
+                    <strong>Available Scholarships:</strong><br>
+                    1. <strong>SASE Scholarships:</strong> For top SASE exam scorers<br>
+                    2. <strong>Academic Excellence:</strong> President's, Chancellor's, Dean's Lists<br>
+                    3. <strong>Athletic Scholarships:</strong> For varsity athletes<br>
+                    4. <strong>Special Skills Grants:</strong> For cultural performers<br>
+                    5. <strong>TES Grants:</strong> Government scholarships<br><br>
+                    <strong>Application:</strong> Through Office of Admissions and Scholarships<br>
+                    <strong>Note:</strong> Each scholarship has specific grade requirements and maintenance rules.`;
+                }
+            }
+            
+            // ========== REGISTRATION & ACADEMICS ==========
+            else if (message.includes('register') || message.includes('registration') || message.includes('enroll') || message.includes('enrollment')) {
+                if (message.includes('load') || message.includes('unit') || message.includes('credit') || message.includes('subject')) {
+                    return `<strong>Academic Load at MSU-SND:</strong><br><br>
+                    <strong>Normal Load:</strong><br>
+                    • 18 units (non-laboratory)<br>
+                    • 20 units (including laboratory work)<br><br>
+                    <strong>Increased Load (GPA 1.5+):</strong><br>
+                    • 21 units (non-laboratory)<br>
+                    • 23 units (including laboratory)<br><br>
+                    <strong>Graduating Students:</strong><br>
+                    • Maximum 28 units (6 units overload)<br>
+                    • Must have GPA 2.0+ in previous terms<br><br>
+                    <strong>Summer Term:</strong><br>
+                    • Normal: 6 units<br>
+                    • Maximum: 9 units (with Dean's approval)<br><br>
+                    <strong>Practice Teaching:</strong> Cannot be taken with other subjects`;
+                }
+                else if (message.includes('classification') || message.includes('freshman') || message.includes('sophomore') || message.includes('junior') || message.includes('senior')) {
+                    return `<strong>Student Classification at MSU-SND:</strong><br><br>
+                    Based on percentage of total required units completed:<br><br>
+                    <strong>• Freshman:</strong> ≤25% of total units<br>
+                    <strong>• Sophomore:</strong> 26-50% of total units<br>
+                    <strong>• Junior:</strong> 51-75% of total units<br>
+                    <strong>• Senior:</strong> ≥76% of total units<br><br>
+                    <strong>For 5-year courses:</strong><br>
+                    • Junior: 41-60% of units<br>
+                    • Senior: ≥61% of units`;
+                }
+                else if (message.includes('change') || message.includes('shift') || message.includes('transfer program') || message.includes('change course')) {
+                    return `<strong>Program Shifting at MSU-SND:</strong><br><br>
+                    <strong>Requirements:</strong><br>
+                    1. Meet department policy of new program<br>
+                    2. Availability of slot in desired program<br>
+                    3. GPA of at least 2.00 for all credited units<br>
+                    4. At least 15 units from previous program can be credited<br><br>
+                    <strong>Procedure:</strong><br>
+                    1. Obtain referral form from current Program Coordinator/Adviser<br>
+                    2. Secure recommendation from Guidance and Counseling Office<br>
+                    3. Approval by Dean of receiving program<br><br>
+                    <strong>Note:</strong> Scholars need permission from Scholarship Center to shift programs.`;
+                }
+                else if (message.includes('office of registrar') || message.includes('registrar')) {
+                    return `<strong>Office of the Registrar at MSU-SND:</strong><br><br>
+                    <strong>Functions:</strong><br>
+                    • Enforces admission and registration rules<br>
+                    • Assesses fees and maintains scholastic records<br>
+                    • Coordinates scholarship program implementation<br>
+                    • Custodian of all student records<br>
+                    • Provides transcripts and certifications<br>
+                    • Services alumni records requests<br><br>
+                    <strong>Late Registration:</strong> Subject to fine unless special student<br>
+                    <strong>Confidentiality:</strong> All student records are safeguarded`;
+                }
+                else {
+                    return `<strong>Registration at MSU-SND:</strong><br><br>
+                    <strong>Key Points:</strong><br>
+                    1. Managed by Office of the Registrar<br>
+                    2. Late registration subject to fines<br>
+                    3. Cannot register after 12% of class meetings without Dean's approval<br>
+                    4. Cross-registration requires written permission<br>
+                    5. Subject substitution requires valid reasons and approval<br><br>
+                    <strong>Student Types:</strong><br>
+                    • Regular: Full curriculum load<br>
+                    • Irregular: Less than full load<br>
+                    • Special/Auditing: Not earning credits<br>
+                    • Full-time: ≥80% of prescribed load<br>
+                    • Part-time: <80% of prescribed load`;
+                }
+            }
+            
+            // ========== GRADING SYSTEM ==========
+            else if (message.includes('grade') || message.includes('gpa') || message.includes('grading') || message.includes('mark')) {
+                if (message.includes('honor') || message.includes('cum laude') || message.includes('magna') || message.includes('summa')) {
+                    return `<strong>Graduation Honors at MSU-SND:</strong><br><br>
+                    <strong>Requirements for Honors:</strong><br>
+                    1. Complete at least 76% of total units at MSU<br>
+                    2. Minimum 2 years residence at MSU<br>
+                    3. Take at least 15 units each term<br><br>
+                    <strong>Honor Levels:</strong><br>
+                    • <strong>Summa Cum Laude:</strong> GPA 1.00-1.20<br>
+                    • <strong>Magna Cum Laude:</strong> GPA 1.21-1.45<br>
+                    • <strong>Cum Laude:</strong> GPA 1.46-1.75<br><br>
+                    <strong>For <4 year courses:</strong> Use "with honors", "with high honors", "with highest honors"`;
+                }
+                else if (message.includes('system') || message.includes('scale') || message.includes('1.0') || message.includes('5.0')) {
+                    return `<strong>Grading System at MSU-SND:</strong><br><br>
+                    <strong>Undergraduate & Graduate Courses:</strong><br>
+                    • 1.0, 1.25 = Excellent<br>
+                    • 1.5, 1.75 = Very Good<br>
+                    • 2.0, 2.25 = Good<br>
+                    • 2.5 = Satisfactory<br>
+                    • 2.75 = Fair<br>
+                    • 3.0 = Passed<br>
+                    • 5.0 = Failure (No Credit)<br>
+                    • INC = Incomplete<br>
+                    • Drp = Dropped<br>
+                    • W = Waived<br>
+                    • P = Passing<br>
+                    • R = Repeat<br><br>
+                    <strong>INC Removal:</strong> Within one academic year or becomes 5.0`;
+                }
+                else if (message.includes('incomplete') || message.includes('inc')) {
+                    return `<strong>Incomplete (INC) Grade Policy at MSU-SND:</strong><br><br>
+                    <strong>Given when:</strong><br>
+                    1. Student has passing standing but misses final exam for valid reason<br>
+                    2. Work is unfinished<br><br>
+                    <strong>Removal Period:</strong><br>
+                    • Must be removed within one academic year<br>
+                    • After one year, INC becomes 5.0 (Failure)<br>
+                    • Scholars must complete INC before next term registration closes<br><br>
+                    <strong>Removal Exams:</strong><br>
+                    • Free during regular exam periods<br>
+                    • Free during 10-day removal period before registration<br>
+                    • Other times: with fee and Dean's approval`;
+                }
+                else {
+                    return `<strong>Grading & Academic Policies at MSU-SND:</strong><br><br>
+                    <strong>Key Points:</strong><br>
+                    1. Numerical grading system (1.0-5.0)<br>
+                    2. INC must be completed within one year<br>
+                    3. Dropping requires instructor and Dean approval<br>
+                    4. Re-examination only for INC removal (not grade improvement)<br>
+                    5. Class attendance strictly monitored<br>
+                    6. Scholastic delinquency leads to warning, probation, or dismissal<br><br>
+                    <strong>USLA Award:</strong> University Student Leadership Award for outstanding student leaders`;
+                }
+            }
+            
+            // ========== STUDENT ORGANIZATIONS ==========
+            else if (message.includes('organization') || message.includes('club') || message.includes('fraternity') || message.includes('sorority') || message.includes('council')) {
+                if (message.includes('federation') || message.includes('femsussco') || message.includes('student council')) {
+                    return `<strong>FEMSUSSCO at MSU-SND:</strong><br><br>
+                    <strong>Federation of MSU Supreme Student Councils</strong><br><br>
+                    <strong>Vision:</strong> Unifying force and driving voice of student body across all MSU campuses<br>
+                    <strong>Mission:</strong> Represent and advocate for student interests, rights, and welfare<br><br>
+                    <strong>Functions:</strong><br>
+                    • Sole officially recognized student body entity<br>
+                    • Defends student rights within Board of Regents<br>
+                    • Advocates policies and programs benefiting students<br>
+                    • Promotes inclusive excellence and positive change<br><br>
+                    <strong>Student Regent:</strong> FEMSUSSCO President serves as Student Regent on Board of Regents`;
+                }
+                else if (message.includes('publication') || message.includes('newspaper') || message.includes('campus paper')) {
+                    return `<strong>Student Publications in MSU System:</strong><br><br>
+                    <strong>MSU-SND:</strong> Obarubar (Sprouting Flower)<br>
+                    <strong>MSU Marawi:</strong> Mindanao Varsitarian<br>
+                    <strong>MSU IIT:</strong> Silahis<br>
+                    <strong>MSU TCTO:</strong> Kavasa<br>
+                    <strong>MSU General Santos:</strong> Bagwis<br>
+                    <strong>MSU Naawan:</strong> Marine Echo<br>
+                    <strong>MSU Maguindanao:</strong> Scribe<br>
+                    <strong>MSU Sulu:</strong> Hangadhulat<br>
+                    <strong>MSU Buug:</strong> The Glendaro<br>
+                    <strong>MSU MSAT:</strong> Kasikas<br>
+                    <strong>MSU LNCAT:</strong> Paduman`;
+                }
+                else if (message.includes('cultural') || message.includes('arts') || message.includes('performance') || message.includes('troupe')) {
+                    return `<strong>Cultural Groups at MSU-SND:</strong><br><br>
+                    <strong>MSU-SND Groups (Special Skills Grants):</strong><br>
+                    1. <strong>Sakasakaw Cultural Ensemble</strong><br>
+                    2. <strong>The Orly's Band</strong><br><br>
+                    <strong>Other Campus Groups:</strong><br>
+                    • Darangen Cultural Troupe (Marawi)<br>
+                    • Kalimulan Cultural Dance Troupe (IIT)<br>
+                    • Integrated Performing Arts Guild (IIT)<br>
+                    • Tambuli (TCTO)<br>
+                    • MSU Chorale (General Santos)<br>
+                    • Indak Kalaunan Dance Troupe (Naawan)<br>
+                    • And many more across MSU System`;
+                }
+                else if (message.includes('policy') || message.includes('rule') || message.includes('regulation')) {
+                    return `<strong>Student Organization Policies at MSU-SND:</strong><br><br>
+                    <strong>Approval Required:</strong><br>
+                    1. Constitution must be approved by President<br>
+                    2. Recommendation by Director of Student Affairs<br>
+                    3. Adviser recommended by students and approved by President<br><br>
+                    <strong>Prohibited Organizations:</strong><br>
+                    • Sectarian, provincial, sectional in name and nature<br>
+                    • Those promoting division instead of unification<br>
+                    • Cultural/religious/linguistic groups causing division<br><br>
+                    <strong>Allowed Organizations:</strong><br>
+                    • Promoting artistic, literary, dramatic, civic, cultural goals<br>
+                    • Under control and supervision of approved adviser`;
+                }
+                else {
+                    return `<strong>Student Organizations at MSU-SND:</strong><br><br>
+                    <strong>Key Points:</strong><br>
+                    1. All organizations must have approved constitution<br>
+                    2. Must have faculty adviser approved by President<br>
+                    3. Cannot be sectarian, provincial, or divisive<br>
+                    4. FEMSUSSCO is official federation of student councils<br>
+                    5. Cultural groups eligible for Special Skills Grants<br>
+                    6. Student publications available on each campus<br><br>
+                    <strong>MSU-SND has:</strong><br>
+                    • Student Council under FEMSUSSCO<br>
+                    • Sakasakaw Cultural Ensemble<br>
+                    • The Orly's Band<br>
+                    • Obarubar student publication`;
+                }
+            }
+            
+            // ========== DISCIPLINE & CODE OF CONDUCT ==========
+            else if (message.includes('discipline') || message.includes('disciplinary') || message.includes('code of conduct') || message.includes('rule violation')) {
+                if (message.includes('ground') || message.includes('offense') || message.includes('violation')) {
+                    return `<strong>Grounds for Disciplinary Action at MSU-SND:</strong><br><br>
+                    1. Cheating or academic dishonesty<br>
+                    2. Carrying firearms or dangerous weapons<br>
+                    3. Alcohol use or drunken behavior on campus<br>
+                    4. Illegal drug possession or use<br>
+                    5. Malversation of funds<br>
+                    6. Violation of university policies<br>
+                    7. Misconduct and dishonesty<br>
+                    8. Threats against students or personnel<br>
+                    9. Assault or violence<br>
+                    10. Preventing others from lawful activities<br>
+                    11. Discharging firearms on campus<br>
+                    12. Any act defined and penalized by law<br><br>
+                    <strong>Penalties:</strong> Warning, suspension, expulsion, or legal action`;
+                }
+                else if (message.includes('committee') || message.includes('investigat') || message.includes('hearing')) {
+                    return `<strong>Disciplinary Committees at MSU-SND:</strong><br><br>
+                    <strong>1. College Investigating Committee:</strong><br>
+                    • 3 faculty members designated by Dean<br>
+                    • 2 students from organization officers list<br>
+                    • Chairman with legal training (if available)<br><br>
+                    <strong>2. Inter-college Disciplinary Committee:</strong><br>
+                    • 5 members (3 faculty, 2 students)<br>
+                    • For cases involving multiple colleges<br>
+                    • Chairman designated by Director of Student Services<br><br>
+                    <strong>Hearing Process:</strong><br>
+                    • Begin within 1 week of respondent's answer<br>
+                    • Notice at least 2 days before hearing<br>
+                    • Respondent may have counsel<br>
+                    • Complete within 2 calendar months`;
+                }
+                else if (message.includes('sanction') || message.includes('penalty') || message.includes('punishment') || message.includes('expulsion') || message.includes('suspension')) {
+                    return `<strong>Disciplinary Sanctions at MSU-SND:</strong><br><br>
+                    <strong>Possible Sanctions:</strong><br>
+                    • Expulsion (permanent removal)<br>
+                    • Suspension from university<br>
+                    • Withholding of graduation and privileges<br>
+                    • Exclusion from any class<br>
+                    • Reprimand<br>
+                    • Warning<br>
+                    • Required expression of apology<br><br>
+                    <strong>Authority Limits:</strong><br>
+                    • Dean/Director: Suspension up to 1 year<br>
+                    • President/Executive Committee: Longer suspension or expulsion<br>
+                    • Summary Action: Immediate suspension up to 15 days for breach of order`;
+                }
+                else if (message.includes('right') || message.includes('due process') || message.includes('appeal')) {
+                    return `<strong>Student Rights in Disciplinary Proceedings at MSU-SND:</strong><br><br>
+                    <strong>Rights of Respondents:</strong><br>
+                    1. Subject to penalty only through due process<br>
+                    2. Complainant heard first, burden of proof on accuser<br>
+                    3. Decision based solely on evidence presented at hearing<br>
+                    4. Status unchanged pending final decision<br>
+                    5. Right to counsel or representative<br>
+                    6. Right to challenge committee members for bias<br>
+                    7. Right to appeal to President within 5 days<br>
+                    8. Right to appeal to Board of Regents within 10 days<br><br>
+                    <strong>All proceedings are confidential.</strong>`;
+                }
+                else {
+                    return `<strong>Student Discipline System at MSU-SND:</strong><br><br>
+                    <strong>Key Principles:</strong><br>
+                    1. Students must obey laws and university rules<br>
+                    2. Reliance on student self-government, counseling, guidance<br>
+                    3. Disciplinary proceedings only for prohibited conduct<br>
+                    4. Rules promulgated by Board of Regents or President<br><br>
+                    <strong>Process:</strong><br>
+                    1. Written complaint<br>
+                    2. Respondent's answer within 3 days<br>
+                    3. Investigation if answer unsatisfactory<br>
+                    4. Committee hearing with due process<br>
+                    5. Recommendation to Dean/Director<br>
+                    6. Action by President<br>
+                    7. Appeal to Board of Regents if needed<br><br>
+                    <strong>All records are confidential.</strong>`;
+                }
+            }
+            
+            // ========== CAMPUS FACILITIES & SERVICES ==========
+            else if (message.includes('facility') || message.includes('service') || message.includes('campus') || message.includes('building') || message.includes('lab')) {
+                if (message.includes('library')) {
+                    return `<strong>MSU-SND Library Services:</strong><br><br>
+                    <strong>Hours:</strong><br>
+                    • Monday-Friday: 8:00 AM-12:00 PM, 1:00 PM-4:00 PM<br>
+                    • Saturday: 9:00 AM-4:00 PM (no noon break)<br><br>
+                    <strong>Requirements for Access:</strong><br>
+                    1. Valid School ID<br>
+                    2. Borrower's Card (validated for current semester)<br><br>
+                    <strong>Borrower's Card Application:</strong><br>
+                    • ₱5.00 registration fee<br>
+                    • 2 pcs. 1x1 ID pictures<br>
+                    • Certificate of Registration (COR)<br><br>
+                    <strong>Lost Books:</strong> Replace with same title/author or pay current price + 10% fee<br>
+                    <strong>Violations:</strong> 3x overdue = Warning, 4x overdue = 1-week borrowing restriction`;
+                }
+                else if (message.includes('medical') || message.includes('health') || message.includes('clinic') || message.includes('infirmary')) {
+                    return `<strong>MSU-SND Health Services:</strong><br><br>
+                    <strong>Services:</strong><br>
+                    • Free physical health services to all students<br>
+                    • Physical examinations upon enrollment<br>
+                    • Medical staff: licensed physician, registered nurses<br>
+                    • Compliance with health services manual of operations<br><br>
+                    <strong>Illness Reporting:</strong> Sick students must report to infirmary within 3 days of absence<br>
+                    <strong>Medical Certificate:</strong> Required for excused absences due to illness<br>
+                    <strong>Location:</strong> Campus clinic/university infirmary`;
+                }
+                else if (message.includes('computer') || message.includes('internet') || message.includes('wifi') || message.includes('it') || message.includes('technology')) {
+                    return `<strong>MSU-SND Computer & IT Services:</strong><br><br>
+                    <strong>Computer Facilities:</strong><br>
+                    • IT systems design and implementation<br>
+                    • Management and maintenance of IT facilities<br>
+                    • In-house software development (Payroll, Registration systems)<br>
+                    • Student information system management<br><br>
+                    <strong>Computer Lab Rules:</strong><br>
+                    1. Responsible behavior required<br>
+                    2. Log out after allotted time<br>
+                    3. No smoking, drinking, eating<br>
+                    4. No games/movies<br>
+                    5. Jobs until 4:30 PM only<br>
+                    6. Personal computers must be documented<br>
+                    7. Back up files before semester end<br><br>
+                    <strong>Institutional Email:</strong> username@msu-snd.edu.ph for official transactions`;
+                }
+                else if (message.includes('sports') || message.includes('gym') || message.includes('athletic') || message.includes('fitness')) {
+                    return `<strong>MSU-SND Sports Facilities:</strong><br><br>
+                    <strong>Office of Sports, Physical Fitness and Recreation:</strong><br>
+                    <strong>Functions:</strong><br>
+                    1. Develop and promote sports programs<br>
+                    2. Implement income-generating sports projects<br>
+                    3. Administer sports scholarship program<br>
+                    4. Manage sports facilities and gymnasium<br><br>
+                    <strong>Specific Tasks:</strong><br>
+                    • Provide physical fitness programs<br>
+                    • Select and train potential athletes<br>
+                    • Promote competitive sports participation<br>
+                    • Develop recreational programs<br>
+                    • Follow Chancellor's directives<br><br>
+                    <strong>MSUSAA:</strong> MSU System Athletic Association Unity Games held annually`;
+                }
+                else if (message.includes('dormitory') || message.includes('residence') || message.includes('housing') || message.includes('boarding')) {
+                    return `<strong>MSU-SND Student Residences:</strong><br><br>
+                    <strong>On-Campus Housing:</strong><br>
+                    • Dormitory services for students from far-flung areas<br>
+                    • Especially for MINSUPALA region students<br>
+                    • Management of campus dormitories<br>
+                    • Monitoring of student welfare in housing<br><br>
+                    <strong>Private Boarding Houses:</strong><br>
+                    • Part of university supervision through accreditation<br>
+                    • Accreditation by: OSA, Housing Management, Community Affairs, Security Services<br>
+                    • Committee alternative if offices not available<br><br>
+                    <strong>Guidelines:</strong> Available and accessible to all students, approved by Board of Regents`;
+                }
+                else if (message.includes('cafeteria') || message.includes('food') || message.includes('canteen')) {
+                    return `<strong>MSU-SND Food Services:</strong><br><br>
+                    <strong>University Food Court:</strong><br>
+                    • Convenient eating place for students, faculty, staff<br>
+                    • Access to healthy and clean food services<br>
+                    • Food safety and hygiene practices implemented<br><br>
+                    <strong>Coordination with LGU:</strong><br>
+                    • Business permits, sanitary permits, health certificates<br>
+                    • DTI certification for food concessionaires<br>
+                    • Regular evaluation of food service quality<br><br>
+                    <strong>Evaluation:</strong> Quality, sanitation, hygienic preparation, clean environment`;
+                }
+                else {
+                    return `<strong>Campus Facilities & Services at MSU-SND:</strong><br><br>
+                    <strong>Available Facilities:</strong><br>
+                    1. <strong>Library:</strong> With borrowing privileges and study areas<br>
+                    2. <strong>Health Clinic:</strong> Free medical services for students<br>
+                    3. <strong>Computer Labs:</strong> With internet access and IT support<br>
+                    4. <strong>Sports Facilities:</strong> Gymnasium and athletic fields<br>
+                    5. <strong>Student Dormitories:</strong> On-campus housing<br>
+                    6. <strong>Food Court:</strong> Cafeteria and food services<br>
+                    7. <strong>Research Laboratories:</strong> For sciences and engineering<br>
+                    8. <strong>Science Labs:</strong> For biology, chemistry, physics<br>
+                    9. <strong>Guidance Center:</strong> Counseling and mental health services<br><br>
+                    <strong>All facilities have specific rules and operating hours.</strong>`;
+                }
+            }
+            
+            // ========== DRUG-FREE POLICY ==========
+            else if (message.includes('drug') || message.includes('substance') || message.includes('random test') || message.includes('drug test')) {
+                if (message.includes('policy') || message.includes('guideline')) {
+                    return `<strong>MSU-SND Drug-Free Campus Policy:</strong><br><br>
+                    <strong>Policy Statement:</strong> Maintain safe, productive learning environment free from illegal drug risks<br>
+                    <strong>Coverage:</strong> All degree programs, Graduate School, Junior/Senior High School<br>
+                    <strong>Compliance:</strong> CHED Memo No. 18, s. 2018 and RA 9165 (Comprehensive Dangerous Drugs Act)<br><br>
+                    <strong>Key Components:</strong><br>
+                    1. Psychoeducation and prevention programs<br>
+                    2. Counseling and rehabilitation services<br>
+                    3. Mandatory random drug testing (minimum 20% of students)<br>
+                    4. Drug Dependency Examination for positive cases<br>
+                    5. Treatment and rehabilitation programs<br><br>
+                    <strong>Testing:</strong> Screening test + Confirmatory test for positive results`;
+                }
+                else if (message.includes('test') || message.includes('testing') || message.includes('random')) {
+                    return `<strong>Drug Testing at MSU-SND:</strong><br><br>
+                    <strong>Random Drug Testing:</strong><br>
+                    • Mandatory for all students<br>
+                    • Minimum 20% of students randomly selected<br>
+                    • Equal chance for all students to be selected<br>
+                    • Conducted every 2 years maximum interval<br>
+                    • No prior notice required<br><br>
+                    <strong>Procedure:</strong><br>
+                    1. Random selection using statistical methods<br>
+                    2. Notification with Acknowledgement and Consent Form<br>
+                    3. Urine test by DOH-accredited laboratory<br>
+                    4. Chain of custody procedures followed<br>
+                    5. Results confidential (need-to-know basis)<br><br>
+                    <strong>Positive Results:</strong> Screening, counseling, possible rehabilitation`;
+                }
+                else if (message.includes('committee') || message.includes('dfc')) {
+                    return `<strong>Drug-Free Committee (DFC) at MSU-SND:</strong><br><br>
+                    <strong>Composition:</strong><br>
+                    • <strong>Chairman:</strong> School Nurse<br>
+                    • <strong>Co-Chairman:</strong> Office of Student Affairs and Services<br>
+                    • <strong>Secretary:</strong> Guidance Counselor<br>
+                    • <strong>Members:</strong> Anti-Illegal Drugs Advocacy Advisers, ROTC Coordinator, SSC President, faculty, staff, students<br><br>
+                    <strong>Responsibilities:</strong><br>
+                    1. Lead drug-free campus advocacy<br>
+                    2. Formulate and review drug-free policy<br>
+                    3. Initiate education and awareness programs<br>
+                    4. Ensure no discrimination against drug dependents<br>
+                    5. Uphold student rights in drug dependency cases<br><br>
+                    <strong>All records strictly confidential.</strong>`;
+                }
+                else if (message.includes('consequence') || message.includes('penalty') || message.includes('sanction') || message.includes('positive')) {
+                    return `<strong>Consequences of Positive Drug Test at MSU-SND:</strong><br><br>
+                    <strong>Process for Positive Results:</strong><br>
+                    1. Confirmatory test for positive screening<br>
+                    2. Notification to student and parents<br>
+                    3. Right to challenge result within 15 days<br>
+                    4. Screening with ASSIST, SRQ, CRAFFT tools<br>
+                    5. Determination of risk level<br><br>
+                    <strong>Interventions by Risk Level:</strong><br>
+                    • <strong>Low Risk:</strong> General intervention (brief intervention, self-help, education)<br>
+                    • <strong>Moderate Risk:</strong> Community-based treatment (psychoeducation, support, skills)<br>
+                    • <strong>High Risk:</strong> Drug Dependency Examination by DOH physician<br><br>
+                    <strong>Failure to comply = Disciplinary action up to dismissal</strong>`;
+                }
+                else {
+                    return `<strong>MSU-SND Drug-Free Campus Program:</strong><br><br>
+                    <strong>Objectives:</strong><br>
+                    1. Maintain drug-free learning environment<br>
+                    2. Promote student health and safety<br>
+                    3. Comply with national laws and CHED requirements<br>
+                    4. Provide intervention and rehabilitation<br><br>
+                    <strong>Key Features:</strong><br>
+                    • Random drug testing of students<br>
+                    • Education and awareness campaigns<br>
+                    • Counseling and rehabilitation services<br>
+                    • Drug-Free Committee oversight<br>
+                    • Confidential handling of all cases<br>
+                    • Partnership with government agencies<br><br>
+                    <strong>Funding:</strong> University bears testing expenses from student fees`;
+                }
+            }
+            
+            // ========== TUITION & FEES ==========
+            else if (message.includes('tuition') || message.includes('fee') || message.includes('payment') || message.includes('cost') || message.includes('expensive')) {
+                if (message.includes('free') || message.includes('ra 10931') || message.includes('universal access')) {
+                    return `<strong>Free Tuition at MSU-SND:</strong><br><br>
+                    <strong>RA 10931 (Universal Access to Quality Tertiary Education Act):</strong><br>
+                    • Free tuition for students in state universities<br>
+                    • Some miscellaneous fees also subsidized<br>
+                    • Partial subsidy for re-enrollment in failed courses<br>
+                    • Subject to rules set by RA 10931<br><br>
+                    <strong>Important:</strong> Free tuition does NOT cover all miscellaneous fees.`;
+                }
+                else if (message.includes('miscellaneous') || message.includes('other fee') || message.includes('additional')) {
+                    return `<strong>Miscellaneous Fees at MSU-SND (BOR Resolution No. 146, S. 2022):</strong><br><br>
+                    <strong>Sample Fees:</strong><br>
+                    • <strong>Entrance Exam:</strong> ₱500 (new students only)<br>
+                    • <strong>Medical Screening:</strong> ₱500 (new students only)<br>
+                    • <strong>Sports Facilities:</strong> ₱400/semester<br>
+                    • <strong>Computer Fees:</strong> ₱1,000/semester<br>
+                    • <strong>Socio-Cultural Activities:</strong> ₱500/semester<br>
+                    • <strong>Student Publication:</strong> ₱500/semester<br>
+                    • <strong>Guidance & Counseling:</strong> ₱200-1,000/semester<br>
+                    • <strong>Handbook Fee:</strong> ₱500 (once, new students)<br>
+                    • <strong>SSC Fee:</strong> ₱500/semester<br><br>
+                    <strong>Total Estimate:</strong> ₱18,900 (new), ₱16,400 (returning) + tuition`;
+                }
+                else if (message.includes('refund') || message.includes('reimburse') || message.includes('withdraw')) {
+                    return `<strong>Fee Refund Policy at MSU-SND:</strong><br><br>
+                    <strong>Refund Schedule (except entrance/registration fees):</strong><br>
+                    • Within 1st week of classes: 80% refund<br>
+                    • Within 2nd-4th weeks: 50% refund<br>
+                    • After 4th week: No refund<br><br>
+                    <strong>Notes:</strong><br>
+                    1. For early withdrawals, count from actual registration date<br>
+                    2. Laboratory fees not refunded after 1st week for voluntary course changes<br>
+                    3. Students granted honorable dismissal or LOA eligible for refunds<br><br>
+                    <strong>Graduation Fee:</strong> ₱5,600 for graduating students`;
+                }
+                else {
+                    return `<strong>Tuition and Fees at MSU-SND:</strong><br><br>
+                    <strong>Tuition Fee:</strong> ₱450/unit per semester (but FREE under RA 10931)<br><br>
+                    <strong>Average Total Fees (24 units):</strong><br>
+                    • <strong>New/Freshman:</strong> ₱29,700 (including tuition)<br>
+                    • <strong>Returning Student:</strong> ₱27,200 (including tuition)<br>
+                    • <strong>Graduating Student:</strong> ₱32,800 (including graduation fee)<br><br>
+                    <strong>Key Points:</strong><br>
+                    1. Tuition is FREE under RA 10931<br>
+                    2. Miscellaneous fees still apply<br>
+                    3. Fees approved by MSU Board of Regents<br>
+                    4. Different fees for new, returning, graduating students<br>
+                    5. Refund policy based on withdrawal timing`;
+                }
+            }
+            
+            // ========== CONTACT INFORMATION ==========
+            else if (message.includes('contact') || message.includes('email') || message.includes('phone') || message.includes('address') || message.includes('location') || message.includes('osa')) {
+                if (message.includes('osa') || message.includes('student affair') || message.includes('office of student')) {
+                    return `<strong>MSU-SND Office of Student Affairs (OSA):</strong><br><br>
+                    <strong>OSA Director:</strong> Mr. Albert R. Cabolbol<br>
+                    <strong>Address:</strong> MSU-Sultan Naga Dimaporo, Ramain, Sultan Naga Dimaporo, Lanao del Norte<br>
+                    <strong>Office Hours:</strong> Monday-Friday, 8:00 AM - 5:00 PM<br>
+                    <strong>Email:</strong> osa@msu-snd.edu.ph<br>
+                    <strong>Phone:</strong> (063) XXX-XXXX<br><br>
+                    <strong>Emergency Contacts:</strong><br>
+                    • <strong>Campus Clinic:</strong> (063) XXX-XXXX<br>
+                    • <strong>Campus Security:</strong> (063) XXX-XXXX<br><br>
+                    <strong>Services:</strong> Admissions, scholarships, student discipline, organizations, activities, guidance`;
+                }
+                else if (message.includes('registrar') || message.includes('record') || message.includes('transcript')) {
+                    return `<strong>MSU-SND Office of the Registrar:</strong><br><br>
+                    <strong>Functions:</strong><br>
+                    • Student registration and records<br>
+                    • Transcript issuance<br>
+                    • Graduation processing<br>
+                    • Scholarship coordination<br><br>
+                    <strong>Contact:</strong> Through OSA or main administration office<br>
+                    <strong>Transcript Requests:</strong> Require clearance and fee payment<br>
+                    <strong>Location:</strong> Administration building`;
+                }
+                else if (message.includes('guidance') || message.includes('counseling') || message.includes('mental health')) {
+                    return `<strong>MSU-SND Guidance and Counseling Office:</strong><br><br>
+                    <strong>Services:</strong><br>
+                    • Individual and group counseling<br>
+                    • Psychological testing<br>
+                    • Career guidance<br>
+                    • Mental health support<br>
+                    • Peer facilitation program<br>
+                    • Tutorial assistance<br><br>
+                    <strong>Approach:</strong> Hybrid (onsite and tele-web counseling)<br>
+                    <strong>Confidentiality:</strong> All sessions strictly confidential<br>
+                    <strong>Location:</strong> Guidance Center building`;
+                }
+                else if (message.includes('clinic') || message.includes('medical') || message.includes('health') || message.includes('infirmary')) {
+                    return `<strong>MSU-SND Campus Clinic/Infirmary:</strong><br><br>
+                    <strong>Services:</strong><br>
+                    • Free medical services for students<br>
+                    • Physical examinations<br>
+                    • Emergency care<br>
+                    • Medical certificates for absences<br><br>
+                    <strong>Staff:</strong> Licensed physician, registered nurses, medical staff<br>
+                    <strong>Hours:</strong> Monday-Friday during office hours<br>
+                    <strong>Emergency:</strong> (063) XXX-XXXX<br>
+                    <strong>Location:</strong> Near administration building`;
+                }
+                else {
+                    return `<strong>MSU-SND Contact Information:</strong><br><br>
+                    <strong>Main Campus Address:</strong><br>
+                    Mindanao State University - Sultan Naga Dimaporo<br>
+                    Ramain, Sultan Naga Dimaporo, Lanao del Norte<br><br>
+                    <strong>Key Offices:</strong><br>
+                    • <strong>Office of Student Affairs (OSA):</strong> Mr. Albert R. Cabolbol, Director<br>
+                    • <strong>Office of the Registrar:</strong> Student records and registration<br>
+                    • <strong>Guidance & Counseling:</strong> Mental health and career services<br>
+                    • <strong>Campus Clinic:</strong> Medical and health services<br>
+                    • <strong>Campus Security:</strong> Safety and emergency response<br><br>
+                    <strong>General Email:</strong> info@msu-snd.edu.ph<br>
+                    <strong>Website:</strong> www.msu-snd.edu.ph (official website)<br>
+                    <strong>Phone:</strong> (063) XXX-XXXX (main line)`;
+                }
+            }
+            
+            // ========== OTHER POLICIES & SERVICES ==========
+            else if (message.includes('nstp') || message.includes('rotc') || message.includes('cwts') || message.includes('lts')) {
+                return `<strong>NSTP at MSU-SND:</strong><br><br>
+                    <strong>Requirement:</strong> All freshmen (since June 2002) must complete NSTP for graduation<br>
+                    <strong>Components (choose one):</strong><br>
+                    1. <strong>ROTC:</strong> Reserve Officers' Training Corps<br>
+                    2. <strong>CWTS:</strong> Civic Welfare Training Service<br>
+                    3. <strong>LTS:</strong> Literacy Training Service<br><br>
+                    <strong>Details:</strong><br>
+                    • 3 non-credit units per semester<br>
+                    • 54-90 training hours per course<br>
+                    • Not included in GPA computation<br>
+                    • Required for all baccalaureate and 2-year TVET programs<br><br>
+                    <strong>Exemptions:</strong><br>
+                    1. Students who already completed NSTP in previous degree<br>
+                    2. Transfer students who completed NSTP elsewhere<br>
+                    3. Sangguniang Kabataan officials in good standing<br>
+                    4. Foreign students/aliens`;
+            }
+            else if (message.includes('attendance') || message.includes('absent') || message.includes('present') || message.includes('miss class')) {
+                return `<strong>Attendance Policy at MSU-SND:</strong><br><br>
+                    <strong>Key Rules:</strong><br>
+                    1. Absences require excuse slip from Dean<br>
+                    2. Illness requires medical certificate from campus clinic<br>
+                    3. Report illness to infirmary within 3 days of absence<br>
+                    4. Make up work covered during absence<br>
+                    5. 2 consecutive absences reported to Student Affairs<br>
+                    6. 20% unexcused absences = dropped from class<br><br>
+                    <strong>Consequences:</strong><br>
+                    • Majority unexcused absences = grade of 5.0<br>
+                    • Majority excused absences = no grade penalty (but must make up work)<br>
+                    • Late enrollment time counted as absence time<br>
+                    • Faculty may require longer attendance for special needs`;
+            }
+            else if (message.includes('thesis') || message.includes('research') || message.includes('course 199')) {
+                return `<strong>Thesis Policies at MSU-SND:</strong><br><br>
+                    <strong>Course 199 (Thesis Writing):</strong><br>
+                    • Not automatically part of regular teaching load<br>
+                    • Adviser earns 0.5 units per successful student defense<br>
+                    • Maximum 6 advisees per faculty per semester<br>
+                    • Group research limited to 3 students per thesis<br><br>
+                    <strong>Thesis Defense:</strong><br>
+                    • Panel of at least 3 faculty members (including adviser)<br>
+                    • Adviser: 50% of grade determination<br>
+                    • Other panel members: 50% of grade determination<br>
+                    • Grading: P (Pass) or F (Fail), not included in scholarship computation<br><br>
+                    <strong>Honorarium Payment (student responsibility):</strong><br>
+                    • Adviser: ₱500 (after successful defense)<br>
+                    • Each Panel Member: ₱250<br>
+                    • No food served by students<br>
+                    • Payment through Cashier's Office`;
+            }
+            else if (message.includes('leave') || message.includes('absence') || message.includes('loa') || message.includes('withdraw')) {
+                return `<strong>Leave of Absence (LOA) at MSU-SND:</strong><br><br>
+                    <strong>Procedure:</strong><br>
+                    1. Written petition to Dean stating reason and period<br>
+                    2. Maximum LOA: 1 academic year<br>
+                    3. No LOA granted later than 2 weeks before semester end<br>
+                    4. Illness requires certification from University Physician<br>
+                    5. Class standing indicated if LOA during second half of semester<br><br>
+                    <strong>Scholarship LOA:</strong><br>
+                    • Maximum 2 sick leaves during entire scholarship period<br>
+                    • Third LOA = automatic scholarship forfeiture<br>
+                    • Total LOA cannot exceed 1 academic year<br><br>
+                    <strong>Withdrawal without LOA:</strong> Registration privileges curtailed`;
+            }
+            else if (message.includes('graduation') || message.includes('graduate') || message.includes('commencement') || message.includes('diploma')) {
+                return `<strong>Graduation Requirements at MSU-SND:</strong><br><br>
+                    <strong>General Requirements:</strong><br>
+                    1. Satisfy all academic and non-academic requirements<br>
+                    2. Approval as candidate by Campus Council and Board of Regents<br>
+                    3. File application and pay graduation fees<br>
+                    4. Clear all financial and other accountabilities<br>
+                    5. Attend general commencement exercises (compulsory)<br><br>
+                    <strong>Residence Requirement:</strong><br>
+                    • Complete at least 50% of units at MSU<br>
+                    • For second bachelor's degree: minimum 30 units in major/related fields<br><br>
+                    <strong>Graduation with Honors:</strong><br>
+                    • Complete at least 76% of units at MSU<br>
+                    • Minimum 2 years residence at MSU<br>
+                    • Take at least 15 units each term<br>
+                    • Only resident credits included in GPA computation`;
+            }
+            
+            // ========== DEFAULT/GREETINGS ==========
+            else if (message.includes('hello') || message.includes('hi') || message.includes('hey') || message.includes('good morning') || message.includes('good afternoon') || message.includes('good evening')) {
+                return `Hello! Welcome to MSU-Sultan Naga Dimaporo Student Affairs Assistant. I can help you with all student-related information. What would you like to know about?`;
+            }
+            else if (message.includes('thank') || message.includes('thanks') || message.includes('salamat')) {
+                return `You're welcome! Is there anything else you'd like to know about MSU-SND student affairs?`;
+            }
+            else if (message.includes('bye') || message.includes('goodbye') || message.includes('see you')) {
+                return `Thank you for using the MSU-SND Student Affairs Assistant. Have a great day! Remember to check the official handbook for complete details.`;
+            }
+            else {
+                return `I can help you with comprehensive information about <strong>MSU-Sultan Naga Dimaporo (MSU-SND)</strong> student affairs including:<br><br>
+                • <strong>Admissions:</strong> Requirements, procedures, transfers<br>
+                • <strong>Scholarships:</strong> Types, eligibility, rules<br>
+                • <strong>Registration:</strong> Process, academic load, policies<br>
+                • <strong>Grading:</strong> System, honors, incomplete grades<br>
+                • <strong>Discipline:</strong> Code of conduct, sanctions, committees<br>
+                • <strong>Organizations:</strong> Student councils, publications, cultural groups<br>
+                • <strong>Facilities:</strong> Library, clinic, computer labs, sports<br>
+                • <strong>Drug-Free Policy:</strong> Testing, committees, consequences<br>
+                • <strong>Tuition & Fees:</strong> Costs, refunds, free tuition info<br>
+                • <strong>Contact Information:</strong> OSA, offices, emergency contacts<br><br>
+                Please ask a specific question or use the quick options above.`;
+            }
+        }
+        
+        // Function to handle quick option clicks
+        function askQuestion(question) {
+            document.getElementById('user-input').value = question;
+            sendMessage();
+        }
+        
+        // Initialize with welcome message
+        window.onload = function() {
+            // Display welcome message after a short delay
+            setTimeout(() => {
+                const welcomeMessage = "I have comprehensive information about <strong>ALL</strong> MSU-Sultan Naga Dimaporo student affairs. You can ask about:<br><br>• Specific admission requirements<br>• Scholarship eligibility criteria<br>• Detailed disciplinary procedures<br>• Complete list of campus facilities<br>• Step-by-step registration process<br>• And much more!";
+                displayMessage(welcomeMessage, 'bot');
+            }, 1500);
+        };
+    </script>
+</body>
+</html>
